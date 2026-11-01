@@ -1,0 +1,11 @@
+{% from "_icons.html" import logo %}
+<header class="appbar">
+  <div class="appbar-in">
+    <a class="brand" href="{{ url_for('index') }}">{{ logo(36) }}<span>MediExpert</span></a>
+    <nav class="pills" aria-label="{{ t.language }}">
+      {% for s in switch %}
+      <a class="pill {{ 'active' if s.active else '' }}" href="{{ s.url }}">{{ s.native }}</a>
+      {% endfor %}
+    </nav>
+  </div>
+</header>

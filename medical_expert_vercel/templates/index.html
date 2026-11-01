@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+{% from "_icons.html" import logo, hero_art, icon %}
+
+{% block body %}
+<section class="hero">
+  <div class="topbar">
+    <div class="brand">{{ logo(38) }}<span>MediExpert</span></div>
+  </div>
+
+  <div class="hero-grid">
+    <div class="hero-text fade-up">
+      <span class="eyebrow">AI Expert System</span>
+      <h1>Medical Expert Diagnosis System</h1>
+      <p class="lead">
+        Tell us how you feel. Get possible conditions and care advice
+        in the language you are most comfortable with.
+      </p>
+
+      <p class="lang-title">Choose your language to begin</p>
+      <div class="lang-grid">
+        {% for code, info in languages.items() %}
+        <a class="lang-card" href="{{ url_for('check', lang=code) }}">
+          <span><strong>{{ info.native }}</strong><small>{{ info.english }}</small></span>
+          {{ icon('arrow') }}
+        </a>
+        {% endfor %}
+      </div>
+    </div>
+
+    <div class="hero-art-wrap fade-up delay">
+      {{ hero_art() }}
+    </div>
+  </div>
+
+  <svg class="wave" viewBox="0 0 1440 90" preserveAspectRatio="none" aria-hidden="true">
+    <path d="M0 40 C240 100 480 0 720 40 C960 80 1200 10 1440 50 V90 H0 Z" fill="#f3fbfa"/>
+  </svg>
+</section>
+
+<section class="features">
+  <article class="feature fade-up">
+    <div class="f-icon teal">{{ icon('book') }}</div>
+    <h3>Knowledge Base</h3>
+    <p>Diseases, symptoms and treatments stored as facts that the system can reason over.</p>
+  </article>
+  <article class="feature fade-up delay">
+    <div class="f-icon blue">{{ icon('link') }}</div>
+    <h3>Unification</h3>
+    <p>Your symptoms are matched against the knowledge base by binding variables to facts.</p>
+  </article>
+  <article class="feature fade-up delay2">
+    <div class="f-icon green">{{ icon('branch') }}</div>
+    <h3>Default Reasoning</h3>
+    <p>A disease is assumed likely unless a known exception rules it out.</p>
+  </article>
+  <article class="feature fade-up delay3">
+    <div class="f-icon red">{{ icon('globe') }}</div>
+    <h3>Multilingual</h3>
+    <p>Enter symptoms and read results in English, Hindi, Telugu or Tamil.</p>
+  </article>
+</section>
+
+<footer class="footer">
+  Educational prototype for a college project. Not a medical diagnosis. Please consult a qualified doctor.
+</footer>
+{% endblock %}

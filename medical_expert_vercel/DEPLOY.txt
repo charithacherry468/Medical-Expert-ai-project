@@ -1,0 +1,11 @@
+FREE PERMANENT HOSTING ON VERCEL (works on any device, no monthly renewal)
+
+1. Create a free account at github.com and a new repository named medical-expert.
+2. Upload ALL files and folders from INSIDE this folder to the repository
+   (app.py, engine.py, matcher.py, translations.py, requirements.txt, public, templates).
+   Do not upload the parent folder itself.
+3. Go to vercel.com, sign up with GitHub, click Add New > Project,
+   import the medical-expert repository, and click Deploy.
+4. Open the link Vercel gives you (https://....vercel.app) on any device.
+
+To run on your own laptop instead:  pip install flask   then   python app.py

@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+{% from "_icons.html" import icon %}
+
+{% block title %}{{ t.title }}{% endblock %}
+
+{% block body %}
+{% include "_header.html" %}
+
+<main class="container">
+  <section class="intro fade-up">
+    <h1>{{ t.check_heading }}</h1>
+    <p>{{ t.check_sub }}</p>
+  </section>
+
+  {% if error %}
+  <div class="alert alert-error" role="alert">{{ icon('alert') }}<span>{{ t.err_none }}</span></div>
+  {% endif %}
+  {% if unknown %}
+  <div class="alert alert-warn" role="alert">{{ icon('alert') }}
+    <span>{{ t.unknown_label }} {{ unknown | join(", ") }}</span>
+  </div>
+  {% endif %}
+
+  <form method="post" action="{{ url_for('analyze') }}" id="checkForm"
+        data-speech="{{ speech }}" data-listening="{{ t.mic_listening }}" data-mic="{{ t.mic }}">
+    <input type="hidden" name="lang" value="{{ lang }}">
+
+    <section class="card fade-up">
+      <div class="card-head">
+        <h2>{{ t.pick_title }}</h2>
+        <div class="search">
+          {{ icon('search') }}
+          <input type="search" id="symSearch" placeholder="{{ t.search_ph }}" autocomplete="off">
+        </div>
+      </div>
+
+      <div class="chips" id="chips">
+        {% for s in symptoms %}
+        <label class="chip {{ 'severe' if s.severe else '' }}" data-search="{{ s.search }}">
+          <input type="checkbox" name="symptoms" value="{{ s.id }}">
+          <span class="emoji">{{ s.emoji }}</span>
+          <span class="label">{{ s.name }}</span>
+        </label>
+        {% endfor %}
+      </div>
+    </section>
+
+    <section class="card fade-up delay">
+      <h2>{{ t.type_title }}</h2>
+      <div class="typebox">
+        <textarea name="text" id="symText" rows="3" placeholder="{{ t.type_ph }}">{{ text }}</textarea>
+        <button type="button" id="micBtn" class="mic" hidden>
+          {{ icon('mic') }}<span>{{ t.mic }}</span>
+        </button>
+      </div>
+      <p class="hint">{{ t.type_hint }}</p>
+    </section>
+
+    <div class="actionbar">
+      <div class="count"><strong id="count">0</strong> {{ t.selected }}</div>
+      <div class="action-btns">
+        <button type="button" id="clearBtn" class="btn btn-ghost">{{ t.clear }}</button>
+        <button type="submit" class="btn btn-primary">{{ t.diagnose }}</button>
+      </div>
+    </div>
+  </form>
+
+  <p class="footnote">{{ t.disclaimer }}</p>
+</main>
+{% endblock %}

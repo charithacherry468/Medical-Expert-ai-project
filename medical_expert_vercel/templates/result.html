@@ -1,0 +1,92 @@
+{% extends "base.html" %}
+{% from "_icons.html" import icon %}
+
+{% block title %}{{ t.result_heading }} - {{ t.title }}{% endblock %}
+
+{% block body %}
+{% include "_header.html" %}
+
+<main class="container">
+  <section class="intro fade-up">
+    <h1>{{ t.result_heading }}</h1>
+  </section>
+
+  {% if warning %}
+  <div class="alert alert-danger pulse" role="alert">
+    {{ icon('alert') }}<span>{{ t.warning }}</span>
+  </div>
+  {% endif %}
+
+  {% if unknown %}
+  <div class="alert alert-warn" role="alert">{{ icon('alert') }}
+    <span>{{ t.unknown_label }} {{ unknown | join(", ") }}</span>
+  </div>
+  {% endif %}
+
+  <section class="card fade-up">
+    <h2>{{ t.your_symptoms }}</h2>
+    <div class="tags">
+      {% for c in chosen %}
+      <span class="tag {{ 'severe' if c.severe else '' }}">{{ c.emoji }} {{ c.name }}</span>
+      {% endfor %}
+    </div>
+  </section>
+
+  <h2 class="section-title fade-up">{{ t.possible }}</h2>
+
+  {% if cards %}
+    {% for c in cards %}
+    <article class="result-card fade-up">
+      <div class="rc-top">
+        <div class="rank">{{ c.rank }}</div>
+        <div class="rc-emoji">{{ c.emoji }}</div>
+        <h3>{{ c.name }}</h3>
+      </div>
+
+      <div class="meter">
+        <div class="meter-bar"><span style="--pct: {{ c.pct }}%"></span></div>
+        <div class="meter-text">{{ c.count }}/{{ c.total }} {{ t.match_label }} ({{ c.pct }}%)</div>
+      </div>
+
+      <p class="rc-matched"><strong>{{ t.matched_label }}:</strong>
+        {% for m in c.matched %}<span class="tag small">{{ m }}</span>{% endfor %}
+      </p>
+
+      <div class="advice">
+        <strong>{{ t.advice_label }}</strong>
+        <p>{{ c.advice }}</p>
+      </div>
+    </article>
+    {% endfor %}
+  {% else %}
+    <div class="card empty fade-up">
+      <div class="big">🩺</div>
+      <p>{{ t.none_found }}</p>
+    </div>
+  {% endif %}
+
+  {% if ruled %}
+  <section class="card ruled fade-up">
+    <h2>{{ t.ruled_out }}</h2>
+    <ul>
+      {% for r in ruled %}
+      <li><strong>{{ r.name }}</strong> - {{ t.because }} {{ r.because | join(", ") }}</li>
+      {% endfor %}
+    </ul>
+  </section>
+  {% endif %}
+
+  <p class="how">{{ t.how }}</p>
+
+  <div class="result-actions">
+    <a class="btn btn-primary" href="{{ url_for('check', lang=lang) }}">
+      {{ icon('back') }}<span>{{ t.check_again }}</span>
+    </a>
+    <button type="button" class="btn btn-ghost" onclick="window.print()">
+      {{ icon('printer') }}<span>{{ t.print }}</span>
+    </button>
+  </div>
+
+  <p class="footnote">{{ t.disclaimer }}</p>
+</main>
+{% endblock %}
